@@ -1,9 +1,10 @@
 Android App快捷开发框架
 =====================
+
 集成Android Volley，SlidingMenue等的App快速开发框架。
 
 #####一、库(com.quick.library)：
-1.QuickLogger，LOG工具。
+1.QuickLogger，LOG工具。  
 2.QuickToolHelper，常用工具类。  
 3.QuickTitleActivity，标题Activity基数。  
 4.QuickRequestActivity，网络请求Activity基类。  
