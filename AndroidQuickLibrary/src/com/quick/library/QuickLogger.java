@@ -1,6 +1,5 @@
 package com.quick.library;
 
-import android.content.Context;
 
 /**
  * Log工具
@@ -9,60 +8,46 @@ import android.content.Context;
  */
 public class QuickLogger {
 
-	private static volatile QuickLogger LOGGER = null;
-
 	private static final String PREFIX = "*//_\\*";
 
-	private String currentTag = null;
+	private static String currentTag = QuickLogger.class.getSimpleName();
 
-	private boolean output = false;
-
-	public static QuickLogger getLogger(Context context) {
-		if (null == LOGGER) {
-			synchronized (QuickLogger.class) {
-				if (null == LOGGER) {
-					LOGGER = new QuickLogger();
-				}
-			}
-		}
-		if (null != context) {
-			LOGGER.setTag(context.getClass().getSimpleName());
-		}
-		return LOGGER;
-	}
-
+	private static boolean output = false;
+	
 	private QuickLogger() {
-		this.currentTag = QuickLogger.class.getSimpleName();
+		
+	}
+	
+	public static void setTag(String currentTag) {
+		QuickLogger.currentTag = currentTag;
+	}
+	
+	public static void setOutput(boolean output) {
+		QuickLogger.output = output;
+		QuickLogger.d("output:" + QuickLogger.output);
+	}
+	
+	public static void d(String message) {
+		QuickLogger.d(currentTag, message);
 	}
 
-	public void setOutput(boolean output) {
-		this.output = output;
-		this.debug("output:" + this.output);
+	public static void e(String message) {
+		QuickLogger.e(currentTag, message);
 	}
-
-	private void setTag(String currentTag) {
-		this.currentTag = currentTag;
-	}
-
-	public void debug(String info) {
+	
+	public static void d(String prefx, String message) {
 		if (output) {
-			android.util.Log.d(currentTag, format(info));
+			android.util.Log.d(currentTag, format(message));
 		}
 	}
 
-	public void error(String info) {
+	public static void e(String prefx, String message) {
 		if (output) {
-			android.util.Log.e(currentTag, format(info));
+			android.util.Log.e(currentTag, format(message));
 		}
 	}
-
-	public void info(String info) {
-		if (output) {
-			android.util.Log.i(currentTag, format(info));
-		}
-	}
-
-	private String format(String info) {
+	
+	private static String format(String info) {
 		return PREFIX + info + PREFIX;
 	}
 

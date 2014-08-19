@@ -10,7 +10,7 @@ public class QuickApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		QuickLogger.getLogger(this).setOutput(true);
+		QuickLogger.setOutput(true);
 		RequestManager.getInstance().init(this);
 	}
 

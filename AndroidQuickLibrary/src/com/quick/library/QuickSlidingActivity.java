@@ -1,7 +1,10 @@
 package com.quick.library;
 
+import android.app.ProgressDialog;
 import android.view.Window;
 
+import com.android.http.LoadControler;
+import com.android.http.RequestManager.RequestListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnClosedListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenedListener;
@@ -13,21 +16,18 @@ import com.quick.library.app.R;
  * @author steven-pan
  *
  */
-public class QuickSlidingActivity extends SlidingActivity implements OnOpenedListener, OnClosedListener {
+public class QuickSlidingActivity extends SlidingActivity implements OnOpenedListener, OnClosedListener, QuickResourceLoader {
 	
 	private boolean isOpen = false;
 	
-	protected QuickLogger logger=null;
-
+	private ProgressDialog mProgressDialog = null;
+	
 	public void setContentView(int resId, int behindId) {
 		super.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.setBehindContentView(behindId);
 		super.setContentView(resId);
 		
-		this.logger=QuickLogger.getLogger(QuickSlidingActivity.this);
-		
-		SlidingMenu sm = getSlidingMenu();// more option see PropertiesActivity
-											// sample
+		SlidingMenu sm = getSlidingMenu();// more option see PropertiesActivity sample
 		sm.setShadowWidthRes(R.dimen.shadow_width);
 		sm.setShadowDrawable(R.drawable.shadow);
 		sm.setFadeDegree(0.35f);
@@ -42,7 +42,6 @@ public class QuickSlidingActivity extends SlidingActivity implements OnOpenedLis
 
 		getSlidingMenu().setOnOpenedListener(this);
 		getSlidingMenu().setOnClosedListener(this);
-
 	}
 	
 	@Override
@@ -59,4 +58,46 @@ public class QuickSlidingActivity extends SlidingActivity implements OnOpenedLis
 		return this.isOpen;
 	}
 
+	public LoadControler get(String url, RequestListener requestListener, int actionId) {
+		return QuickToolHelper.get(url, requestListener, actionId);
+	}
+
+	public LoadControler post(String url, String data, RequestListener requestListener, int actionId) {
+		return QuickToolHelper.post(url, data, requestListener, actionId);
+	}
+
+	/**
+	 * show progress dialog
+	 * 
+	 * @param message
+	 *            message
+	 * @param cancel
+	 *            cancelable
+	 */
+	public void showDialog(String message) {
+		if (isFinishing()) {
+			return;
+		}
+		if (mProgressDialog == null) {
+			mProgressDialog = ProgressDialog.show(this, "", message);
+			mProgressDialog.setCanceledOnTouchOutside(false);
+		} else {
+			mProgressDialog.setMessage(message);
+			mProgressDialog.show();
+		}
+	}
+
+	public boolean isDialogShowing() {
+		return (mProgressDialog != null && mProgressDialog.isShowing());
+	}
+
+	public void dismissDialog() {
+		if (isFinishing()) {
+			return;
+		}
+		if (mProgressDialog != null && mProgressDialog.isShowing()) {
+			mProgressDialog.dismiss();
+		}
+	}
+	
 }
