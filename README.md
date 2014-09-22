@@ -24,7 +24,7 @@ Activity基类：
 
 #####三、使用说明
 1.ActivityQuickLibrary依赖于SlidingMenuLib。  
-2.Android Volley使用的为[android-volley-manager](https://github.com/winfirm/android-volley-manager)。  
+2.Android Volley使用的为[android-volley-manager](https://github.com/panxw/android-volley-manager)。  
 
 有需要的朋友，可参照com.quick.library.app下的示例，开发自己的应用。  
 欢迎Star或Fork~  
